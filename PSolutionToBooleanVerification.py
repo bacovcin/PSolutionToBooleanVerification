@@ -80,7 +80,6 @@ class PropClause(object):
                         # be satisfiable
                         self.satisfiable = 's'
 
-
     def __str__(self):
         return str('(' + self.typeof + ' ' +
                    ' '.join([str(x) for x in list(self.contents)]) + ' ' + ')')
@@ -152,7 +151,7 @@ def ParseFormula(x):
                 if list(x.contents)[0].typeof == 't':
                     newcontents += x.contents
                 else:
-                    newcontents += x.contents[0].contents
+                    newcontents += list(x.contents)[0].contents
             else:
                 newcontents.append(PropClause('-', [x]))
         outClause = [PropClause('-', [PropClause('&', newcontents)])]
@@ -175,6 +174,8 @@ def ParseFormula(x):
 a = '(& A B (- C ) (- (| C D ) ) )'
 a = '(| A (- A ) )'
 a = '(& (| x1 y1 ) (| x2 y2 ) (| (- x3 ) (- y3 ) ) (| x4 y4 ) x3 (- y3 ) )'
+a = '(& (- (& A (- A ) ) ) (- A ) B C (| (- B ) D ) )'
+a = '(& (- (| A (- A ) ) ) (- (& B (- B ) ) ) )'
 b = ParseFormula(a)
 print(b[0][0])
 print(b[0][0].satisfiable)
